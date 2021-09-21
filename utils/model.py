@@ -36,7 +36,7 @@ class ExtractorModule:
 
         keyframe_features = torch.empty([0, 512], dtype=torch.float16).to(self.device)
 
-        for i in tqdm(range(batches)):
+        for i in range(batches):
             # print(f"Processing batch {i+1}/{batches}")
 
             batch_frames = keyframes[i * batch_size : (i + 1) * batch_size]
