@@ -42,9 +42,9 @@ if __name__ == '__main__':
     
     keyframes_features = keyframes_features.tolist()
 
-
     data = pd.DataFrame(zip(keyframe_id, keyframes_features), columns=['id', 'features'])
     data.to_csv('keyframes_features.csv', index=None)
+    print('____FINISHED____')
 
 
     
