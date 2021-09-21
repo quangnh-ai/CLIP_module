@@ -5,7 +5,7 @@ import cv2
 import os
 from PIL import Image
 import math
-import tqdm
+from tqdm import tqdm
 
 class ExtractorModule:
 

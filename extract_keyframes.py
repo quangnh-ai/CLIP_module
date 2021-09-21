@@ -1,7 +1,7 @@
 import torch
 import os
 import argparse
-import tqdm
+from tqdm import tqdm
 import pandas as pd
 
 from utils.model import ExtractorModule
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     extractor = ExtractorModule(device=device)
     print("Using", device.type)
 
-    keyframe_folder_path = args.key_frame_folder_path
+    keyframe_folder_path = args.keyframe_folder_path
     shot_folder_list = os.listdir(keyframe_folder_path)
     shot_folder_list = sorted(shot_folder_list)
 
