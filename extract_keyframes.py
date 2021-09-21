@@ -9,13 +9,15 @@ from utils.model import ExtractorModule
 def get_arg():
     parser = argparse.ArgumentParser()
     parser.add_argument('--keyframe_folder_path', type=str)
-    parser.add_argument('--cuda', action='store_true', default=False) 
+    parser.add_argument('--cuda', action='store_true', default=False)
+    parser.add_argument('--batch_size', type=int, default=50) 
     args = parser.parse_args()
     return args
 
 if __name__ == '__main__':
 
     args = get_arg()
+    batch_size = args.batch_size
 
     device = torch.device('cuda' if torch.cuda.is_available() and args.cuda else 'cpu')
 
@@ -33,7 +35,7 @@ if __name__ == '__main__':
     for folder in tqdm(shot_folder_list):
         folder_path = os.path.join(keyframe_folder_path, folder)
         ids = os.listdir(folder_path)
-        features = extractor.ExtractKeyframes(folder_keyframe_path=folder_path)
+        features = extractor.ExtractKeyframes(folder_keyframe_path=folder_path, batch_size=batch_size)
 
         keyframes_features = torch.cat((keyframes_features, features))
         keyframe_id += ids
