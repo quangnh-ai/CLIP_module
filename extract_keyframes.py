@@ -30,7 +30,7 @@ if __name__ == '__main__':
     shot_folder_list = sorted(shot_folder_list)
 
     keyframe_id = []
-    keyframes_features = torch.empty([0, 512], dtype=torch.float16).to('cpu')
+    keyframes_features = torch.empty([0, 512], dtype=torch.float16).to(device)
 
     for folder in tqdm(shot_folder_list):
         folder_path = os.path.join(keyframe_folder_path, folder)
