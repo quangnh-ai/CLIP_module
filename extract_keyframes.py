@@ -21,9 +21,9 @@ if __name__ == '__main__':
 
     device = torch.device('cuda' if torch.cuda.is_available() and args.cuda else 'cpu')
 
-    print("Load extractor")
+    print("||||Load extractor||||")
     extractor = ExtractorModule(device=device)
-    print("Using", device.type)
+    print("||||Using", device.type, "||||")
 
     keyframe_folder_path = args.keyframe_folder_path
     shot_folder_list = os.listdir(keyframe_folder_path)
@@ -40,6 +40,8 @@ if __name__ == '__main__':
         keyframes_features = torch.cat((keyframes_features, features))
         keyframe_id += ids
     
+    print('||||Finised extract features||||')
+    print('||||Saving Features........||||')
     keyframes_features = keyframes_features.tolist()
 
     data = pd.DataFrame(zip(keyframe_id, keyframes_features), columns=['id', 'features'])
