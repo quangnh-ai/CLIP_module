@@ -30,7 +30,7 @@ if __name__ == '__main__':
     shot_folder_list = sorted(shot_folder_list)
 
     keyframe_id = []
-    keyframes_features = torch.empty([0, 512], dtype=torch.float16).to(device)
+    keyframes_features = torch.empty([0, 512], dtype=torch.float16).to('cpu')
 
     for folder in tqdm(shot_folder_list):
         folder_path = os.path.join(keyframe_folder_path, folder)
@@ -41,6 +41,7 @@ if __name__ == '__main__':
         keyframe_id += ids
     
     keyframes_features = keyframes_features.tolist()
+
 
     data = pd.DataFrame(zip(keyframe_id, keyframes_features), columns=['id', 'features'])
     data.to_csv('keyframes_features.csv', index=None)
