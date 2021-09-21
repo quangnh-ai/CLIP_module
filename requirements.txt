@@ -1,6 +1,7 @@
 Pillow
 opencv-python
 numpy
+pandas
 ftfy
 regex
 tqdm

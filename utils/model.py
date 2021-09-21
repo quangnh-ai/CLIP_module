@@ -5,6 +5,7 @@ import cv2
 import os
 from PIL import Image
 import math
+import tqdm
 
 class ExtractorModule:
 
@@ -27,6 +28,7 @@ class ExtractorModule:
         keyframes = []
 
         for path in file_names:
+            # print(path)
             keyframe = cv2.imread(path)
             keyframes.append(Image.fromarray(keyframe[:, :, ::-1]))
         
@@ -34,7 +36,7 @@ class ExtractorModule:
 
         keyframe_features = torch.empty([0, 512], dtype=torch.float16).to(self.device)
 
-        for i in range(batches):
+        for i in tqdm(range(batches)):
             # print(f"Processing batch {i+1}/{batches}")
 
             batch_frames = keyframes[i * batch_size : (i + 1) * batch_size]
@@ -47,7 +49,7 @@ class ExtractorModule:
             keyframe_features = torch.cat((keyframe_features, batch_features))
 
 
-        print("Extract Features == Finished")
+        # print("Extract Features == Finished")
         return keyframe_features
 
     def ExtractText(self, query):
