@@ -2,6 +2,7 @@ Pillow
 opencv-python
 numpy
 pandas
+h5py
 ftfy
 regex
 tqdm
