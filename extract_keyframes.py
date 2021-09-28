@@ -36,7 +36,10 @@ if __name__ == '__main__':
 
     for folder in tqdm(shot_folder_list):
         folder_path = os.path.join(keyframe_folder_path, folder)
-        ids = os.listdir(folder_path)
+        ids = [f for f in os.listdir(folder_path) 
+               if os.path.isfile(os.path.join(folder_path, f)) 
+               and f.endswith('.jpg') or f.endswith('.png')]
+
         features = extractor.ExtractKeyframes(folder_keyframe_path=folder_path, batch_size=batch_size)
 
         keyframes_features = torch.cat((keyframes_features, features))
