@@ -40,6 +40,8 @@ if __name__ == '__main__':
         ids = [f for f in os.listdir(folder_path) 
                if os.path.isfile(os.path.join(folder_path, f)) 
                and f.endswith('.jpg') or f.endswith('.png')]
+        
+        ids = sorted(ids)
 
         features = extractor.ExtractKeyframes(folder_keyframe_path=folder_path, batch_size=batch_size)
 

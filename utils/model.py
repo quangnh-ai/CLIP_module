@@ -21,6 +21,8 @@ class ExtractorModule:
         file_names = [f for f in os.listdir(folder_keyframe_path) 
                       if os.path.isfile(os.path.join(folder_keyframe_path, f)) 
                       and f.endswith('.jpg') or f.endswith('.png')]
+
+        file_names = sorted(file_names)
         
         for i in range(len(file_names)):
             file_names[i] = os.path.join(folder_keyframe_path, file_names[i])
