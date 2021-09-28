@@ -27,6 +27,7 @@ if __name__ == '__main__':
     extractor = ExtractorModule(device=device)
     print("||||Using", device.type, "||||")
 
+    print("||||Start Extracting Feature||||")
     keyframe_folder_path = args.keyframe_folder_path
     shot_folder_list = os.listdir(keyframe_folder_path)
     shot_folder_list = sorted(shot_folder_list)
