@@ -62,4 +62,11 @@ class ExtractorModule:
         
         return text_features
 
+    def search_frame(self, search_query, frame_features, display_results_count=3):
 
+        text_features = self.ExtractText(query=search_query)
+
+        similarities = (100 * frame_features @ text_features.T)
+        values, best_frame_idx = similarities.topk(display_results_count, dim=0)
+
+        return best_frame_idx
