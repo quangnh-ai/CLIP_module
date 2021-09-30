@@ -66,7 +66,10 @@ class ExtractorModule:
 
         text_features = self.ExtractText(query=search_query)
 
+        frame_features = torch.from_numpy(frame_features).to(self.device)
+        frame_features = frame_features.type(torch.float16)
+
         similarities = (100 * frame_features @ text_features.T)
         values, best_frame_idx = similarities.topk(display_results_count, dim=0)
-
+        
         return best_frame_idx
