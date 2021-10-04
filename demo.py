@@ -40,14 +40,22 @@ if __name__ == '__main__':
     with open('keyframes_id.json', 'r') as f:
         keyframes_id_path = json.load(f)
     
-    while True:
-        query = input("Query: ")
 
-        best_frame_idx = model.search_frame(search_query=query, frame_features=features,
-                                            display_results_count=4)
-        
-        for i in best_frame_idx:
-            print(ids[i])
+    query = input("Query: ")
 
-        
+    best_frame_idx = model.search_frame(search_query=query, frame_features=features,
+                                        display_results_count=4)
+    
+    
+    image1 = cv2.imread(keyframes_id_path[ids[best_frame_idx[0]]])
+    image2 = cv2.imread(keyframes_id_path[ids[best_frame_idx[1]]])
+    image3 = cv2.imread(keyframes_id_path[ids[best_frame_idx[2]]])
+    image4 = cv2.imread(keyframes_id_path[ids[best_frame_idx[3]]])
+
+    cv2.imshow('image1', image1)
+    cv2.imshow('image2', image2)
+    cv2.imshow('image3', image3)
+    cv2.imshow('image4', image4)
+
+    cv2.waitKey(0)
     
