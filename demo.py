@@ -46,7 +46,8 @@ if __name__ == '__main__':
         best_frame_idx = model.search_frame(search_query=query, frame_features=features,
                                             display_results_count=4)
         
-        print(best_frame_idx)
+        for i in best_frame_idx:
+            print(ids[i])
 
-        # print(query)
+        
     
