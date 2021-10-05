@@ -34,9 +34,6 @@ if __name__ == '__main__':
     ids = np.concatenate((v3c1_ids, v3c2_ids))
     features = np.concatenate((v3c1_features, v3c2_features))
 
-    features = features.tolist()
-    ids = ids.tolist()
-
     save_path = args.save_path
     data = h5py.File(save_path, 'w')
     data.create_dataset('ids', data=ids)
