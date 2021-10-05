@@ -8,6 +8,9 @@ def get_arg():
     parser.add_argument('--features2_path', type=str)
     parser.add_argument('--save_path', type=str)
 
+    args = parser.parse_args()
+    return args
+
 if __name__ == '__main__':
     args = get_arg()
 
