@@ -9,6 +9,7 @@ python extract_keyframes.py --keyframe_folder_path 'path to keyframes folder' \
 ```
 
 keyframe folder structure:
+```bash
 keyframe
  |
  |-0000
@@ -17,7 +18,7 @@ keyframe
  |  |-...
  |-0001
  |-...
-
+```
 
 ## Mini demo
 ```bash
