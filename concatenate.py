@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     print('____Start____')
     print('____Concatenating____')
-    v3c1 = h5py.File(args.features1_path)
+    v3c1 = h5py.File(args.features1_path, 'r')
     v3c1_ids = v3c1.get('ids')
     v3c1_features = v3c1.get('features')
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     v3c1_features = np.array(v3c1_features)
 
     
-    v3c2 = h5py.File(args.features2_path)
+    v3c2 = h5py.File(args.features2_path, 'r')
     v3c2_ids = v3c2.get('ids')
     v3c2_features = v3c2.get('features')
 
