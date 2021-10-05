@@ -5,7 +5,7 @@ from tqdm import tqdm
 import pandas as pd
 import h5py
 
-from utils.model import ExtractorModule
+from utils.extractor_model import ExtractorModule
 
 def get_arg():
     parser = argparse.ArgumentParser()

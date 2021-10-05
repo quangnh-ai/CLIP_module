@@ -10,7 +10,7 @@ import json
 from torch._C import device
 from configs.config import init_config
 
-from utils.model import ExtractorModule
+from utils.extractor_model import ExtractorModule
 
 
 # def get_arg():
