@@ -19,6 +19,7 @@ keyframe
  |-0001
  |-...
 ```
+For more example about the keyframes folder structure, you can open the thumbs folder inside data folder.
 
 ## Mini demo
 ```bash
