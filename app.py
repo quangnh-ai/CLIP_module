@@ -22,4 +22,4 @@ def retrieval(req: Request):
     
 if __name__ == "__main__":
     retrieval_model = RetrievalModel(get_arg(), my_cfg)
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
