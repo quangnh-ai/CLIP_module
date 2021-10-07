@@ -1,9 +1,6 @@
-FROM pytorch/pytorch:1.9.0-cuda11.1-cudnn8-runtime
+FROM python:3.8
 
 EXPOSE 5000
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6 -y
