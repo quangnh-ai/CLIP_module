@@ -1,6 +1,6 @@
 FROM pytorch/pytorch:1.9.0-cuda11.1-cudnn8-runtime
 
-EXPOSE 3000
+EXPOSE 5000
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -13,3 +13,5 @@ RUN pip install -r requirements.txt
 
 WORKDIR /app
 COPY . /app
+RUN cd /app/libs/CLIP
+RUN python setup.py install
