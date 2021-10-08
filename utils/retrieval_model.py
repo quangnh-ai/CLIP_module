@@ -46,7 +46,7 @@ class RetrievalModel:
             text_features = self.model.encode_text(clip.tokenize(query).to(self.device))
             text_features /= text_features.norm(dim=-1, keepdim=True)
 
-        print(self.features.shape)
+        # print(self.features.shape)
 
         similarities = (100 * self.features @ text_features.T)
         values, best_frame_idx = similarities.topk(self.count, dim=0)
