@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM pytorch/pytorch:1.9.0-cuda10.2-cudnn7-runtime
 
 EXPOSE 5000
 
@@ -10,5 +10,3 @@ RUN pip install -r requirements.txt
 
 WORKDIR /app
 COPY . /app
-RUN cd /app/libs/CLIP
-RUN python setup.py install
