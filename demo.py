@@ -47,10 +47,10 @@ if __name__ == '__main__':
                                         display_results_count=4)
     
     
-    image1 = cv2.imread(keyframes_id_path[ids[best_frame_idx[0]]])
-    image2 = cv2.imread(keyframes_id_path[ids[best_frame_idx[1]]])
-    image3 = cv2.imread(keyframes_id_path[ids[best_frame_idx[2]]])
-    image4 = cv2.imread(keyframes_id_path[ids[best_frame_idx[3]]])
+    image1 = cv2.imread(keyframes_id_path[ids[best_frame_idx[0]][0]])
+    image2 = cv2.imread(keyframes_id_path[ids[best_frame_idx[1]][0]])
+    image3 = cv2.imread(keyframes_id_path[ids[best_frame_idx[2]][0]])
+    image4 = cv2.imread(keyframes_id_path[ids[best_frame_idx[3]][0]])
 
     cv2.imshow('image1', image1)
     cv2.imshow('image2', image2)
