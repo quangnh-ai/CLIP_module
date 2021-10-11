@@ -28,8 +28,8 @@ class RetrievalModel:
 
         self.features = self.data.get('features')
         self.features = np.array(self.features)
-        self.features = torch.from_numpy(self.features).to(self.device)
-        self.features = self.features.to(torch.float16)
+        # self.features = torch.from_numpy(self.features).to(self.device)
+        # self.features = self.features.to(torch.float16)
 
         self.count = len(self.features)
 
@@ -47,10 +47,10 @@ class RetrievalModel:
             text_features /= text_features.norm(dim=-1, keepdim=True)
 
         # print(self.features.shape)
-
+        text_features = text_features.to("cpu").numpy()
+        
         similarities = (100 * self.features @ text_features.T)
-        values, best_frame_idx = similarities.topk(self.count, dim=0)
-
+        best_frame_idx = similarities.argsort(axis=0)[:][::-1]
         results = []
 
         for i in best_frame_idx:
