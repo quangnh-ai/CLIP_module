@@ -54,6 +54,6 @@ class RetrievalModel:
         results = []
 
         for i in best_frame_idx:
-            results.append(self.ids[i])
+            results.append(self.ids[i][0])
         
         return results
