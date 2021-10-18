@@ -3,7 +3,10 @@ import os
 import h5py
 import numpy as np
 import pandas as pd
+import clip
+import torch
 from tqdm import tqdm
+import argparse
 
 def load_data_h5(path: str) -> dict:
     hf = h5py.File(path, 'r')
@@ -48,4 +51,48 @@ def load_faiss_index(faiss_index_path, image_dataframe_path):
     index = faiss.read_index(faiss_index_path)
     df_image = pd.read_csv(image_dataframe_path)
     return index, df_image
+
+def get_arg():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--indexed_features_path', type=str)
+    parser.add_argument('--dataframe_index_path', type=str)
+
+    args = parser.parse_args()
+    return args
+
+class IndexingRetrievalModel:
+
+    def __init__(self, args, my_cfg) -> None:
+        
+        self.indexed_feature = faiss.read_index(args.indexed_features_path)
+        
+        self.df_image = pd.read_csv(args.dataframe_index_path)
+        self.df_image['url'] = '/mlcv/Databases/VBS/Processed_Data/Thumbnail/TransNetV2_200x113/' + self.df_image['url']
+        keyframe_id = self.df_image['keyframe_id']
+        video_id = [id.split('_')[0] for id in keyframe_id]
+        df_vid = pd.DataFrame({'video_id': video_id})
+        self.df_image = pd.concat([self.df_image, df_vid], axis=1)
+
+        self.model, self.preprocess = clip.load(my_cfg["CLIP"]["model_name"])
+
+    def clip_extract_feature(self, text):
+        text_tokens = clip.tokenize(text).cuda()
+        with torch.no_grad():
+            return self.model.encode_text(text_tokens).float().cpu().numpy()
     
+    def retrieval(self, text_query):
+        text_feature = self.clip_extract_feature(text_query)
+        f_dists, f_ids = self.indexed_feature(text_feature, k=1000)
+
+        df_res = pd.DataFrame({'index': list(np.array(f_ids).flat),
+                               'dist': list(np.array(f_dists).flat)})
+        
+        df_res = pd.merge(df_res, self.df_image, how='left', on='index')
+        result_imgs = [{
+                'keyframe_id': row['keyframe_id'],
+                'keyframe_name': row['url'].split('/')[-1],
+                'keyframe_path': row['url'],
+                'video_id': row['video_id']
+                } for i, row in df_res.iterrows()] 
+        
+        return result_imgs
