@@ -63,9 +63,13 @@ def get_arg():
 class IndexingRetrievalModel:
 
     def __init__(self, args, my_cfg) -> None:
-        
-        self.indexed_feature = faiss.read_index(args.indexed_features_path)
-        
+
+        n_gpus = faiss.get_num_gpus()
+        print("number of GPUs:", n_gpus)
+
+        cpu_index = faiss.read_index(args.indexed_features_path)
+        self.indexed_feature =faiss.index_cpu_to_all_gpus(cpu_index)
+
         self.df_image = pd.read_csv(args.dataframe_index_path)
         self.df_image['url'] = '/mlcv/Databases/VBS/Processed_Data/Thumbnail/TransNetV2_200x113/' + self.df_image['url']
         keyframe_id = self.df_image['keyframe_id']
