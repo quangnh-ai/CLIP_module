@@ -6,6 +6,7 @@ my_cfg = init_config()
 
 retrieval_model = IndexingRetrievalModel(get_arg(), my_cfg)
 
+print("input a query:")
 query = input(str)
 result = retrieval_model.retrieval(query)
 print(result[0])
