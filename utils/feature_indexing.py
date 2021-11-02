@@ -96,7 +96,8 @@ class IndexingRetrievalModel:
                 'keyframe_id': row['keyframe_id'],
                 'keyframe_name': row['url'].split('/')[-1],
                 'keyframe_path': row['url'],
-                'video_id': row['video_id']
+                'video_id': row['video_id'],
+                'score' : row['dist']
                 } for i, row in df_res.iterrows()] 
         
         return result_imgs
