@@ -27,5 +27,5 @@ async def text_query(txt_query: Optional[str]=None):
 
 if __name__ == '__main__':
     retrieval_model = IndexingRetrievalModel(get_arg(), my_cfg)
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5050)
 
