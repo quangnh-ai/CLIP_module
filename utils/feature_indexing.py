@@ -93,10 +93,11 @@ class IndexingRetrievalModel:
         
         df_res = pd.merge(df_res, self.df_image, how='left', on='index')
         result_imgs = [{
-                'keyframe_id': row['keyframe_id'],
-                'keyframe_name': row['url'].split('/')[-1],
-                'keyframe_path': row['url'],
+                'dataset': row['url'].split('/')[0],
                 'video_id': row['video_id'],
+                'frame_id': row['keyframe_id'],
+                # 'keyframe_name': row['url'].split('/')[-1],
+                'thumbnail_path': row['url'],
                 'score' : row['dist']
                 } for i, row in df_res.iterrows()] 
         
