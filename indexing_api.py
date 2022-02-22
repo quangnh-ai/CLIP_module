@@ -23,7 +23,7 @@ async def retrieval(req: Request):
 @app.get("/text_query/{txt_query}", status_code=200)
 async def text_query(txt_query: Optional[str]=None):
     
-    return {"result": retrieval_model.retrieval(txt_query)}
+    return retrieval_model.retrieval(txt_query)
 
 if __name__ == '__main__':
     retrieval_model = IndexingRetrievalModel(get_arg(), my_cfg)
