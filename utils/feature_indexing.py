@@ -103,7 +103,10 @@ class IndexingRetrievalModel:
                 'shot_id': self.mapping.get(row['keyframe_id']),
                 'frame_id': row['keyframe_id'],
                 # 'keyframe_name': row['url'].split('/')[-1],
-                'thumbnail_path': row['url'],
+                'thumbnail_path': row['url'].split('/')[0] + '/' + 
+                                  row['video_id'] + '/' + 
+                                  self.mapping.get(row['keyframe_id']) + '/' +
+                                  row['video_id'] + '_' + self.mapping.get(row['keyframe_id']) + '_' + row['keyframe_id'],
                 'score' : row['dist']
                 } for i, row in df_res.iterrows()] 
         
