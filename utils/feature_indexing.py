@@ -73,7 +73,7 @@ class IndexingRetrievalModel:
         self.indexed_feature =faiss.index_cpu_to_all_gpus(cpu_index)
 
         self.df_image = pd.read_csv(args.dataframe_index_path)
-        self.df_image['url'] = '/mlcv/Databases/VBS/Processed_Data/Thumbnail/TransNetV2_200x113/' + self.df_image['url']
+        # self.df_image['url'] = '/mlcv/Databases/VBS/Processed_Data/Thumbnail/TransNetV2_200x113/' + self.df_image['url']
         keyframe_id = self.df_image['keyframe_id']
         video_id = [id.split('_')[0] for id in keyframe_id]
         df_vid = pd.DataFrame({'video_id': video_id})
@@ -106,8 +106,7 @@ class IndexingRetrievalModel:
                 'thumbnail_path': row['url'].split('/')[0] + '/' + 
                                   row['video_id'] + '/' + 
                                   self.mapping.get(row['keyframe_id']) + '/' +
-                                  row['video_id'] + '_' + self.mapping.get(row['keyframe_id']) + '_' + row['keyframe_id'],
-                'score' : row['dist']
+                                  row['video_id'] + '_' + self.mapping.get(row['keyframe_id']) + '_' + row['keyframe_id'] + '.jpg'
+                # 'score' : row['dist']
                 } for i, row in df_res.iterrows()] 
-        
         return result_imgs
