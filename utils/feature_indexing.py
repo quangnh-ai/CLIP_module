@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import clip
 import torch
+import json
 from tqdm import tqdm
 import argparse
 
@@ -56,6 +57,7 @@ def get_arg():
     parser = argparse.ArgumentParser()
     parser.add_argument('--indexed_features_path', type=str)
     parser.add_argument('--dataframe_index_path', type=str)
+    parser.add_argument('--mapping_kf2shot', type=str)
 
     args = parser.parse_args()
     return args
@@ -77,6 +79,9 @@ class IndexingRetrievalModel:
         df_vid = pd.DataFrame({'video_id': video_id})
         self.df_image = pd.concat([self.df_image, df_vid], axis=1)
 
+        content = open(args.mapping_kf2shot)
+        self.mapping = json.load(content)
+
         self.model, self.preprocess = clip.load(my_cfg["CLIP"]["model_name"])
 
     def clip_extract_feature(self, text):
@@ -95,6 +100,7 @@ class IndexingRetrievalModel:
         result_imgs = [{
                 'dataset': row['url'].split('/')[0],
                 'video_id': row['video_id'],
+                'shot_id': self.mapping.get(row['keyframe_id']),
                 'frame_id': row['keyframe_id'],
                 # 'keyframe_name': row['url'].split('/')[-1],
                 'thumbnail_path': row['url'],
