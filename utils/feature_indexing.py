@@ -91,7 +91,7 @@ class IndexingRetrievalModel:
     
     def retrieval(self, text_query):
         text_feature = self.clip_extract_feature(text_query)
-        f_dists, f_ids = self.indexed_feature.search(text_feature, k=3000)
+        f_dists, f_ids = self.indexed_feature.search(text_feature, k=2048)
 
         df_res = pd.DataFrame({'index': list(np.array(f_ids).flat),
                                'dist': list(np.array(f_dists).flat)})
