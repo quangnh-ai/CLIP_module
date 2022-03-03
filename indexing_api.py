@@ -20,10 +20,13 @@ async def retrieval(req: Request):
     query = req["query"]
     return {"result": retrieval_model.retrieval(query)}
 
-@app.get("/CLIP/{txt_query}", status_code=200)
-async def text_query(txt_query: Optional[str]=None):
-    
-    return retrieval_model.retrieval(txt_query)
+@app.get("/CLIP/search/{tag}", status_code=200)
+async def text_query(tag: str, q: Optional[str]=None):
+    if q == "" or q == None or q == " ":
+        return {
+            "message": "query string is null"
+        }
+    return retrieval_model.retrieval(q)
 
 if __name__ == '__main__':
     retrieval_model = IndexingRetrievalModel(get_arg(), my_cfg)
