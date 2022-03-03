@@ -20,7 +20,7 @@ async def retrieval(req: Request):
     query = req["query"]
     return {"result": retrieval_model.retrieval(query)}
 
-@app.get("/CLIP/search/{tag}", status_code=200)
+@app.get("/CLIP/{tag}", status_code=200)
 async def text_query(tag: str, q: Optional[str]=None):
     if q == "" or q == None or q == " ":
         return {
