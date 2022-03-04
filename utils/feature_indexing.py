@@ -100,8 +100,8 @@ class IndexingRetrievalModel:
         result_imgs = [{
                 'dataset': row['url'].split('/')[0],
                 'video_id': row['video_id'],
-                'shot_id': self.mapping.get(row['keyframe_id']),
-                'frame_id': row['keyframe_id'],
+                'shot_id': int(self.mapping.get(row['keyframe_id']).split('_')[1]),
+                'frame_id': int(row['keyframe_id'].split('_')[1]),
                 # 'keyframe_name': row['url'].split('/')[-1],
                 'thumbnail_path': row['url'].split('/')[0] + '/' + 
                                   row['video_id'] + '/' + 
