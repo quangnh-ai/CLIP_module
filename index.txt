@@ -1,0 +1,3 @@
+CUDA_VISIBLE_DEVICES=0 python3 indexing_api.py --indexed_features_path faiss_idx_gpu.bin --dataframe_index_path faiss_idx_img_urls.csv --mapping_kf2shot TransNetV2_kf2shot.json
+
+https://github.com/quangnh009182/CLIP_module.git

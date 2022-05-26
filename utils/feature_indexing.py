@@ -9,16 +9,20 @@ import json
 from tqdm import tqdm
 import argparse
 
+
 def load_data_h5(path: str) -> dict:
     hf = h5py.File(path, 'r')
     data = {'feature': np.array(hf.get('features')),
             'keyframe_id': np.array(hf.get('ids'))}
-    print(f'(+) Loaded {data["feature"].shape} features of {os.path.basename(path)}')
+    print(
+        f'(+) Loaded {data["feature"].shape} features of {os.path.basename(path)}')
     hf.close()
     return data
 
+
 def save_img_urls(keyframe_ids: list, path_img_url: str):
-    keyframe_ids = [keyframe_id.decode("utf-8") for keyframe_id in keyframe_ids]
+    keyframe_ids = [keyframe_id.decode("utf-8")
+                    for keyframe_id in keyframe_ids]
     keyframe_ids = [keyframe_id.split(".")[0] for keyframe_id in keyframe_ids]
     img_urls = []
     for keyframe_id in keyframe_ids:
@@ -47,11 +51,13 @@ def faiss_index(feature_path, save_path, dataframe_path, dims=512):
     print(f'(+) Index file is save at {save_path}')
     save_img_urls(keyframe_ids=keyframe_ids, path_img_url=dataframe_path)
 
+
 def load_faiss_index(faiss_index_path, image_dataframe_path):
     print(f'(+) Loading index')
     index = faiss.read_index(faiss_index_path)
     df_image = pd.read_csv(image_dataframe_path)
     return index, df_image
+
 
 def get_arg():
     parser = argparse.ArgumentParser()
@@ -62,6 +68,7 @@ def get_arg():
     args = parser.parse_args()
     return args
 
+
 class IndexingRetrievalModel:
 
     def __init__(self, args, my_cfg) -> None:
@@ -70,7 +77,7 @@ class IndexingRetrievalModel:
         print("number of GPUs:", n_gpus)
 
         cpu_index = faiss.read_index(args.indexed_features_path)
-        self.indexed_feature =faiss.index_cpu_to_all_gpus(cpu_index)
+        self.indexed_feature = faiss.index_cpu_to_all_gpus(cpu_index)
 
         self.df_image = pd.read_csv(args.dataframe_index_path)
         # self.df_image['url'] = '/mlcv/Databases/VBS/Processed_Data/Thumbnail/TransNetV2_200x113/' + self.df_image['url']
@@ -84,29 +91,41 @@ class IndexingRetrievalModel:
 
         self.model, self.preprocess = clip.load(my_cfg["CLIP"]["model_name"])
 
-    def clip_extract_feature(self, text):
+    def clip_extract_text_feature(self, text):
         text_tokens = clip.tokenize(text).cuda()
         with torch.no_grad():
             return self.model.encode_text(text_tokens).float().cpu().numpy()
-    
-    def retrieval(self, text_query):
-        text_feature = self.clip_extract_feature(text_query)
-        f_dists, f_ids = self.indexed_feature.search(text_feature, k=2048)
+
+    def clip_extract_image_feature(self, img):
+        img_tensor = self.preprocess(img).unsqueeze(0).cuda()
+        with torch.no_grad():
+            return self.model.encode_image(img_tensor).float().cpu().numpy()
+
+    def retrieval(self, text_query=None, image_query=None):
+        assert text_query is not None or image_query is not None, "No query specified"
+        if text_query:
+            search_feature = self.clip_extract_text_feature(text_query)
+        elif image_query:
+            search_feature = self.clip_extract_image_feature(image_query)
+        f_dists, f_ids = self.indexed_feature.search(search_feature, k=2048)
 
         df_res = pd.DataFrame({'index': list(np.array(f_ids).flat),
                                'dist': list(np.array(f_dists).flat)})
-        
+
         df_res = pd.merge(df_res, self.df_image, how='left', on='index')
         result_imgs = [{
-                'dataset': row['url'].split('/')[0],
-                'video_id': row['video_id'],
-                'shot_id': int(self.mapping.get(row['keyframe_id']).split('_')[1]),
-                'frame_id': int(row['keyframe_id'].split('_')[1]),
-                # 'keyframe_name': row['url'].split('/')[-1],
-                'thumbnail_path': row['url'].split('/')[0] + '/' + 
-                                  row['video_id'] + '/' + 
-                                  self.mapping.get(row['keyframe_id']) + '/' +
-                                  row['video_id'] + '_' + self.mapping.get(row['keyframe_id']) + '_' + row['keyframe_id'] + '.jpg'
-                # 'score' : row['dist']
-                } for i, row in df_res.iterrows()] 
+            'clip_index': row['index'],
+            'dataset': row['url'].split('/')[0],
+            'video_id': row['video_id'],
+            'shot_id': int(self.mapping.get(row['keyframe_id']).split('_')[1]),
+            'frame_id': int(row['keyframe_id'].split('_')[1]),
+            # 'keyframe_name': row['url'].split('/')[-1],
+            'thumbnail_path': row['url'].split('/')[0] + '/' +
+            row['video_id'] + '/' +
+            self.mapping.get(row['keyframe_id']) + '/' +
+            row['video_id'] + '_' + \
+            self.mapping.get(row['keyframe_id']) + '_' + \
+            row['keyframe_id'] + '.jpg'
+            # 'score' : row['dist']
+        } for i, row in df_res.iterrows()]
         return result_imgs
