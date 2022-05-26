@@ -34,12 +34,14 @@ def text_query(q: str):
 def find_visual_similar(
     dataset: str,
     video_id: str,
+    shot_id: str,
     frame_id: str,
 ):
     keyframe_dir = Path(
-        "/mlcv/Databases/VBS/Processed_Data/Thumbnail/TransNetV2_200x113")
+        "/mlcv/Databases/VBS/Processed_Data/Thumbnail/ShotThumbnail_TransNetV2_200x113")
     keyframe_path = keyframe_dir / dataset / \
-        video_id / f"{video_id}_{frame_id}.png"
+        video_id / shot_id / f"{video_id}_{int(shot_id) - 1}_{frame_id}.jpg"
+    print(str(keyframe_path))
     if not keyframe_path.exists():
         return {}
     img = Image.open(str(keyframe_path))
